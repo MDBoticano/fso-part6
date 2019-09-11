@@ -4,6 +4,14 @@ import { voteFor, createAnecdote } from './reducers/anecdoteReducer';
 const App = ({ store }) => {
   const anecdotes = store.getState()
 
+  // Sort anecdotes based on likes (descending)
+  const sortAnecdotes = (anecdotes) => {
+    const anecdotesCopy = [...anecdotes]
+    return anecdotesCopy.sort((a,b) => b.votes - a.votes)
+  }
+
+  const sortedAnecdotes = sortAnecdotes(anecdotes)
+
   const addAnecdote = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
@@ -14,7 +22,7 @@ const App = ({ store }) => {
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotes.map(anecdote =>
+        {sortedAnecdotes.map(anecdote => 
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
