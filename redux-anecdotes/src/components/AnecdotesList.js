@@ -17,7 +17,7 @@ const Anecdote = ({ content, votes, voteHandler, id }) => {
   )
 }
 
-const Anecdotes = ({ store }) => {
+const AnecdotesList = ({ store }) => {
   const anecdotes = store.getState()
 
   // Sort anecdotes based on likes (descending)
@@ -30,20 +30,19 @@ const Anecdotes = ({ store }) => {
 
   return (
     <div>
-      <h2>Anecdotes</h2>
-      { sortedAnecdotes.map( anecdote => {
-        return (
-          <Anecdote 
-            key={anecdote.id}
-            id={anecdote.id}
-            content={anecdote.content}
-            votes={anecdote.votes}
-            voteHandler={() => store.dispatch(voteFor(anecdote.id))}
-          />
-        )
-      })}
+    { sortedAnecdotes.map( anecdote => {
+      return (
+        <Anecdote 
+          key={anecdote.id}
+          id={anecdote.id}
+          content={anecdote.content}
+          votes={anecdote.votes}
+          voteHandler={() => store.dispatch(voteFor(anecdote.id))}
+        />
+      )
+    })}
     </div>
   )
 }
 
-export default Anecdotes
+export default AnecdotesList
