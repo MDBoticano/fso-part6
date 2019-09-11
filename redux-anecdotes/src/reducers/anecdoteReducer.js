@@ -41,6 +41,7 @@ const reducer = (state = initialState, action) => {
   }
 }
 
+/* Action creators */
 export const voteFor = (id) => {
   return {
     type: 'VOTE',
