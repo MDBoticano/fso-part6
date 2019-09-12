@@ -18,9 +18,9 @@ const Anecdote = ({ content, votes, voteHandler, id }) => {
 }
 
 const AnecdotesList = ({ store }) => {
-  const anecdotes = store.getState()
+  const anecdotes = store.getState().anecdotes
 
-  // Sort anecdotes based on likes (descending)
+  /* Sort anecdotes based on likes (descending) */
   const sortAnecdotes = (anecdotes) => {
     const anecdotesCopy = [...anecdotes]
     return anecdotesCopy.sort((a,b) => b.votes - a.votes)
