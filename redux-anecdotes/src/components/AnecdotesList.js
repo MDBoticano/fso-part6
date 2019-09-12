@@ -4,8 +4,8 @@ import { createNotification, removeNotification } from '../reducers/notification
 
 const Anecdote = ({ content, votes, voteHandler, id }) => {
   return (
-    <div key={id}>
-      <div>
+    <div key={id} style={{ marginBottom: '.5rem' }}>
+      <div style={{ fontSize: '1.25rem' }}>
         {content}
       </div>
       <div>
@@ -19,15 +19,25 @@ const Anecdote = ({ content, votes, voteHandler, id }) => {
 }
 
 const AnecdotesList = ({ store }) => {
-  const anecdotes = store.getState().anecdotes
-
+  /* Filters Anecdotes based on filter state value */
+  const filterAnecdotes = (anecdotes, filterTerm) => {
+    const anecdotesCopy = [...anecdotes]
+    return anecdotesCopy.filter(anecdote => {
+      return anecdote.content.includes(filterTerm)}
+    )
+  }
+  
   /* Sort anecdotes based on likes (descending) */
   const sortAnecdotes = (anecdotes) => {
     const anecdotesCopy = [...anecdotes]
     return anecdotesCopy.sort((a,b) => b.votes - a.votes)
   }
+  
+  const anecdotes = store.getState().anecdotes  
 
-  const sortedAnecdotes = sortAnecdotes(anecdotes)
+  const filteredAnecdotes = filterAnecdotes(anecdotes, store.getState().filter)
+
+  const sortedAnecdotes = sortAnecdotes(filteredAnecdotes)
 
   const voteHandler = (anecdote) => {
     store.dispatch(voteFor(anecdote.id))

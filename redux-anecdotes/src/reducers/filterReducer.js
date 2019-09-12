@@ -5,7 +5,7 @@ export const filterChange = (filter) => {
   }
 }
 
-const filterReducer = (state = 'a', action) => {
+const filterReducer = (state = '', action) => {
   switch (action.type) {
     case 'SET_FILTER':
       return action.filter
