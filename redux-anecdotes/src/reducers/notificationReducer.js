@@ -11,14 +11,14 @@ export const removeNotification = () => {
   }
 }
 
-const initialState = ''
+const initialState = '\u00A0' // non-breaking space
 
 const notificationReducer = (state = initialState, action) => {
   switch(action.type) {
     case 'CREATE_NOTIFICATION':
       return action.content
     case 'REMOVE_NOTIFICATION':
-      return ''
+      return initialState
     default:
       return state
   }

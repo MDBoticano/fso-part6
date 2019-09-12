@@ -1,5 +1,6 @@
 import React from 'react'
 import { voteFor } from '../reducers/anecdoteReducer'
+import { createNotification, removeNotification } from '../reducers/notificationReducer'
 
 const Anecdote = ({ content, votes, voteHandler, id }) => {
   return (
@@ -28,6 +29,16 @@ const AnecdotesList = ({ store }) => {
 
   const sortedAnecdotes = sortAnecdotes(anecdotes)
 
+  const voteHandler = (anecdote) => {
+    store.dispatch(voteFor(anecdote.id))
+
+    const voteNotification = ('you voted \'' + anecdote.content.toString() + '\'')
+    store.dispatch(createNotification(voteNotification))
+    setTimeout(() => {
+      store.dispatch(removeNotification())
+    }, 5000)
+  }
+
   return (
     <div>
     { sortedAnecdotes.map( anecdote => {
@@ -37,7 +48,7 @@ const AnecdotesList = ({ store }) => {
           id={anecdote.id}
           content={anecdote.content}
           votes={anecdote.votes}
-          voteHandler={() => store.dispatch(voteFor(anecdote.id))}
+          voteHandler={() => voteHandler(anecdote)}
         />
       )
     })}
