@@ -6,18 +6,10 @@ import { createNotification, removeNotification }
   from '../reducers/notificationReducer'
 
 const AnecdotesList = (props) => {
- 
-  
-  const anecdotes = props.anecdotes  
-
-  const filteredAnecdotes = filterAnecdotes(anecdotes, props.filter)
-
-  const sortedAnecdotes = sortAnecdotes(filteredAnecdotes)
-
   const voteHandler = (anecdote) => {
     props.voteFor(anecdote.id)
 
-    const voteNotification = (`you voted '${anecdote.content}'`)
+    const voteNotification = (`you voted for '${anecdote.content}'`)
     props.createNotification(voteNotification)
     setTimeout(() => {
       props.removeNotification()
@@ -26,7 +18,7 @@ const AnecdotesList = (props) => {
 
   return (
     <div>
-    { sortedAnecdotes.map( anecdote => {
+    { props.visibleAnecdotes.map( anecdote => {
       return (
         <Anecdote 
           key={anecdote.id}
@@ -43,23 +35,22 @@ const AnecdotesList = (props) => {
 
 /* Helper selectors */
 /* Filters Anecdotes based on filter state value */
-const filterAnecdotes = (anecdotes, filterTerm) => {
+const filterAnecdotes = ({ anecdotes, filter}) => {
   const anecdotesCopy = [...anecdotes]
   return anecdotesCopy.filter(anecdote => {
-    return anecdote.content.includes(filterTerm)}
+    return anecdote.content.toLowerCase().includes(filter.toLowerCase())}
   )
 }
 
 /* Sort anecdotes based on likes (descending) */
-const sortAnecdotes = (anecdotes) => {
+const sortAnecdotes = ( anecdotes ) => {
   const anecdotesCopy = [...anecdotes]
   return anecdotesCopy.sort((a,b) => b.votes - a.votes)
 }
 
 const mapStateToProps = (state) => {
   return {
-    anecdotes: state.anecdotes,
-    filter: state.filter
+    visibleAnecdotes: sortAnecdotes(filterAnecdotes(state))
   }
 }
 
