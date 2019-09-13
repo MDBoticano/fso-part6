@@ -38,7 +38,7 @@ const AnecdotesList = (props) => {
 const filterAnecdotes = ({ anecdotes, filter}) => {
   const anecdotesCopy = [...anecdotes]
   return anecdotesCopy.filter(anecdote => {
-    return anecdote.content.toLowerCase().includes(filter.toLowerCase())}
+    return (anecdote.content.toLowerCase()).includes(filter.toLowerCase())}
   )
 }
 
