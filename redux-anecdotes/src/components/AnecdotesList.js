@@ -1,51 +1,26 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import Anecdote from './Anecdote'
 import { voteFor } from '../reducers/anecdoteReducer'
-import { createNotification, removeNotification } from '../reducers/notificationReducer'
+import { createNotification, removeNotification } 
+  from '../reducers/notificationReducer'
 
-const Anecdote = ({ content, votes, voteHandler, id }) => {
-  return (
-    <div key={id} style={{ marginBottom: '.5rem' }}>
-      <div style={{ fontSize: '1.25rem' }}>
-        {content}
-      </div>
-      <div>
-        has {votes}
-        <button onClick={voteHandler}>
-          vote
-        </button>
-      </div>
-    </div>
-  )
-}
-
-const AnecdotesList = ({ store }) => {
-  /* Filters Anecdotes based on filter state value */
-  const filterAnecdotes = (anecdotes, filterTerm) => {
-    const anecdotesCopy = [...anecdotes]
-    return anecdotesCopy.filter(anecdote => {
-      return anecdote.content.includes(filterTerm)}
-    )
-  }
+const AnecdotesList = (props) => {
+ 
   
-  /* Sort anecdotes based on likes (descending) */
-  const sortAnecdotes = (anecdotes) => {
-    const anecdotesCopy = [...anecdotes]
-    return anecdotesCopy.sort((a,b) => b.votes - a.votes)
-  }
-  
-  const anecdotes = store.getState().anecdotes  
+  const anecdotes = props.anecdotes  
 
-  const filteredAnecdotes = filterAnecdotes(anecdotes, store.getState().filter)
+  const filteredAnecdotes = filterAnecdotes(anecdotes, props.filter)
 
   const sortedAnecdotes = sortAnecdotes(filteredAnecdotes)
 
   const voteHandler = (anecdote) => {
-    store.dispatch(voteFor(anecdote.id))
+    props.voteFor(anecdote.id)
 
     const voteNotification = ('you voted \'' + anecdote.content.toString() + '\'')
-    store.dispatch(createNotification(voteNotification))
+    props.createNotification(voteNotification)
     setTimeout(() => {
-      store.dispatch(removeNotification())
+      props.removeNotification()
     }, 5000)
   }
 
@@ -66,4 +41,29 @@ const AnecdotesList = ({ store }) => {
   )
 }
 
-export default AnecdotesList
+/* Helper selectors */
+/* Filters Anecdotes based on filter state value */
+const filterAnecdotes = (anecdotes, filterTerm) => {
+  const anecdotesCopy = [...anecdotes]
+  return anecdotesCopy.filter(anecdote => {
+    return anecdote.content.includes(filterTerm)}
+  )
+}
+
+/* Sort anecdotes based on likes (descending) */
+const sortAnecdotes = (anecdotes) => {
+  const anecdotesCopy = [...anecdotes]
+  return anecdotesCopy.sort((a,b) => b.votes - a.votes)
+}
+
+const mapStateToProps = (state) => {
+  return {
+    anecdotes: state.anecdotes,
+    filter: state.filter
+  }
+
+}
+
+export default connect(
+  mapStateToProps
+)(AnecdotesList)
