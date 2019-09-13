@@ -7,7 +7,7 @@ import { createNotification, removeNotification }
 
 const AnecdotesList = (props) => {
   const voteHandler = (anecdote) => {
-    props.voteFor(anecdote.id)
+    props.voteFor(anecdote)
 
     const voteNotification = (`you voted for '${anecdote.content}'`)
     props.createNotification(voteNotification)
