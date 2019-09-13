@@ -1,13 +1,23 @@
-export const createNotification = (content) => {
+const createNotification = (content) => {
   return {
     type: 'CREATE_NOTIFICATION',
-    content
+    content,
   }
 }
 
-export const removeNotification = () => {
+const removeNotification = () => {
   return {
-    type: 'REMOVE_NOTIFICATION'
+    type: 'REMOVE_NOTIFICATION',
+  }
+}
+
+export const setNotification = (notif, time) => {
+  return async (dispatch) => {
+    dispatch(createNotification(notif))
+
+    setTimeout(() => {
+      dispatch(removeNotification())
+    }, time * 1000)
   }
 }
 
