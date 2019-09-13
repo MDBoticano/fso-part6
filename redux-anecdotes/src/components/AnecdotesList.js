@@ -17,7 +17,7 @@ const AnecdotesList = (props) => {
   const voteHandler = (anecdote) => {
     props.voteFor(anecdote.id)
 
-    const voteNotification = ('you voted \'' + anecdote.content.toString() + '\'')
+    const voteNotification = (`you voted '${anecdote.content}'`)
     props.createNotification(voteNotification)
     setTimeout(() => {
       props.removeNotification()
@@ -61,9 +61,17 @@ const mapStateToProps = (state) => {
     anecdotes: state.anecdotes,
     filter: state.filter
   }
+}
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    voteFor: id => dispatch(voteFor(id)),
+    createNotification: notif => dispatch(createNotification(notif)),
+    removeNotification: () => dispatch(removeNotification()),
+  }
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps,
 )(AnecdotesList)
