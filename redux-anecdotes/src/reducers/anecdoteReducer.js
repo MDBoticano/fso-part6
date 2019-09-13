@@ -1,3 +1,30 @@
+import anecdoteService from '../services/anecdotes'
+
+/* Action creators */
+export const initializeAnecdotes = () => {
+  return async (dispatch) => {
+    const anecdotes = await anecdoteService.getAll()
+    dispatch ({
+      type: 'INIT_ANECDOTES',
+      data: anecdotes,
+    })
+  }
+}
+
+export const createAnecdote = (data) => {
+  return {
+    type: 'NEW_ANECDOTE',
+    data,
+  }
+}
+
+export const voteFor = (id) => {
+  return {
+    type: 'VOTE',
+    data: { id }
+  }
+}
+
 const anecdoteReducer = (state = [], action) => {
   console.log('state now: ', state)
   console.log('action', action)
@@ -19,28 +46,6 @@ const anecdoteReducer = (state = [], action) => {
       )
     default:
       return state
-  }
-}
-
-/* Action creators */
-export const initializeAnecdotes = (anecdotes) => {
-  return {
-    type: 'INIT_ANECDOTES',
-    data: anecdotes,
-  }
-}
-
-export const createAnecdote = (data) => {
-  return {
-    type: 'NEW_ANECDOTE',
-    data,
-  }
-}
-
-export const voteFor = (id) => {
-  return {
-    type: 'VOTE',
-    data: { id }
   }
 }
 
