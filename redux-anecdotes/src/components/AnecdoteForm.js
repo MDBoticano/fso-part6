@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { createAnecdote } from '../reducers/anecdoteReducer'
 import { createNotification, removeNotification } from 
   '../reducers/notificationReducer'
-import anecdoteService from '../services/anecdotes'
 
 const AnecdoteForm = ( props ) => {
   const addAnecdote = async (event) => {
@@ -12,8 +11,7 @@ const AnecdoteForm = ( props ) => {
     event.target.anecdote.value = ''
 
     /* Create and Dispatch actions */
-    const newAnecdote = await anecdoteService.createNew(content)
-    props.createAnecdote(newAnecdote)
+    props.createAnecdote(content)
     const anecdoteCreated = `Added '${content}' to anecdotes list`
     
     
